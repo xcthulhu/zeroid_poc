@@ -1,50 +1,123 @@
-# Welcome to your Expo app 👋
+# ZeroID Phone App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Welcome to the **ZeroID Phone App**! This Expo-based app supports `zeroid://` URL handlers, requiring iOS-specific development. Below are instructions to get you started developing on for **iOS**.
 
-## Get started
+---
 
-1. Install dependencies
+## Getting Started
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Before running the app, ensure you have all dependencies installed. Start by running:
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+This will install the necessary packages and dependencies for the project.
 
-## Learn more
+---
 
-To learn more about developing your project with Expo, look at the following resources:
+## Bundle the Expo App
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+To bundle the `expo` app, type:
 
-## Join the community
+```bash
+npx expo export
+```
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Tips for Getting a Clean Build
+
+Sometimes there can be issues with npm cache and misconfigured build directories.
+
+To make a completely clean build, type the following:
+
+```bash
+git clean -Xdf
+npm cache clean --force
+npm install
+npx expo export
+```
+
+After this, the Expo app should be successfully bundled.
+
+
+---
+
+## Running the App on the iOS Simulator
+
+Since the app registers `zeroid://` URL handlers, you need to use the iOS Simulator for testing. Follow these steps:
+
+1. Prebuild the iOS native files:
+
+```bash
+npx expo prebuild
+```
+
+2. Install the required CocoaPods:
+
+```bash
+npx pod-install
+```
+
+3. Launch the app on the iOS Simulator:
+
+```bash
+npx expo run:ios
+```
+
+### Testing URL Handlers in the iOS Simulator
+
+To open a `zeroid://` URL (e.g., to test a specific functionality), use the following command:
+
+```bash
+xcrun simctl openurl booted "zeroid://prover?sessionId=123456"
+```
+
+Replace `123456` with your desired session ID or other query parameters.
+
+---
+
+## Deploying to a Physical iPhone
+
+### Prerequisites
+
+To deploy to a physical iPhone, you must have:
+
+- An **Apple Developer Membership**.
+- Access to your phone's **UDID** (Unique Device Identifier).
+
+#### Steps to Add Your iPhone to Your Developer Account
+
+1. **Find Your iPhone's UDID**:
+   - Connect your iPhone to your Mac.
+   - Open **Finder** and locate your phone under **Locations**.
+   - Click on your phone, then repeatedly click the small text displaying the model, available storage, and battery percentage until the **UDID** appears.
+   - Copy the UDID.
+
+2. **Register Your iPhone**:
+   - Visit [Apple's Developer Portal](https://developer.apple.com/account/resources/devices/list).
+   - Add your iPhone and enter its UDID.
+
+### Building and Installing the App
+
+1. Open the `ZeroID.xcodeproj` file located in the `ios` directory. You can do this at the command line by typing
+
+   ```bash
+   open ios/ZeroID.xcodeproj
+   ```
+
+   This will open **Xcode**.
+
+2. In Xcode:
+   - Select the `ZeroID` project under **Targets**.
+   - Go to the **Signing and Capabilities** tab.
+   - Log in to your Apple Developer account and set your team.
+
+3. Once the setup in Xcode is complete, return to the terminal and run:
+
+   ```bash
+   npx react-native run-ios --mode Release --terminal terminal
+   ```
+
+   If all goes well, the app will be installed on your iPhone.
