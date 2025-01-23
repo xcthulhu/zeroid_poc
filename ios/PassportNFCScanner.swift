@@ -25,20 +25,22 @@ import NFCPassportReader
           return dg
         }
 
-        let passportReader = PassportReader()
+        // let passportReader = PassportReader()
 
-        let passport = try await passportReader.readPassport(
-          mrzKey: mrzKey,
-          tags: validGroups,
-          skipSecureElements: skipSecureElements,
-          skipCA: skipCA,
-          skipPACE: skipPACE
-        )
+        // let passport = try await passportReader.readPassport(
+        //   mrzKey: mrzKey,
+        //   tags: validGroups,
+        //   skipSecureElements: skipSecureElements,
+        //   skipCA: skipCA,
+        //   skipPACE: skipPACE
+        // )
 
-        let dict = passport.dumpPassportData(
-          selectedDataGroups: DataGroupId.allCases,
-          includeActiveAuthenticationData: true
-        )
+        // let dict = passport.dumpPassportData(
+        //   selectedDataGroups: DataGroupId.allCases,
+        //   includeActiveAuthenticationData: true
+        // )
+
+        let dict = ["test": sayHi()]
 
         resolve(dict)
       } catch {

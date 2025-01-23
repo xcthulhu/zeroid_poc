@@ -1,0 +1,4 @@
+bindings/
+target/
+*.xcframework/
+*.a
