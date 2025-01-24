@@ -4,9 +4,10 @@ import { ThemedView } from '@/components/ThemedView';
 import NfcManager, { NfcTech } from 'react-native-nfc-manager';
 import react from 'react';
 
-import { getMRZKey } from '@/utils/passport-utils';
+// import * as testPassportData from './passport-data.json';
+import * as usCerts from '@/assets/csca/us_certs.json';
+import * as passportUtils from '@/utils/passport-utils';
 import { NativeModules } from "react-native";
-import { base64ToUint8Array } from '@/utils/array-utils';
 
 const { PassportNFCScanner } = NativeModules;
 
@@ -29,15 +30,19 @@ export default function HomeScreen() {
 
   const scanPassport = async () => {
     try {
-      const mrzKey = getMRZKey("591443446", "840523", "280916");
-      const result = await PassportNFCScanner.scan(
-        mrzKey,                  // computed mrzKey
-        ["SOD", "DG1"],         // dataGroups
-        true,                   // skipSecureElements
-        true,                   // skipCA
-        true                    // skipPACE
+      const data = await passportUtils.scan(
+        "591443446",
+        "840523",
+        "280916",
+        ["SOD", "DG1"],
       );
-      setPassportData(result);
+      // const verificationResult = await passportUtils.verifySod(testPassportData.SOD, usCerts["dddccce0b82f0ab801ae97d6b4843b6411e08925a10ac0867c33d09148798ff9-cert.der"], testPassportData.DG1, 1);
+      if (!data.SOD || !data.DG1) {
+        setPassportData("No data found");
+        return;
+      }
+      const verificationResult = await passportUtils.verifySod(data.SOD, usCerts["dddccce0b82f0ab801ae97d6b4843b6411e08925a10ac0867c33d09148798ff9-cert.der"], data.DG1, 1);
+      setPassportData(verificationResult);
     } catch (error) {
       setPassportData(`${error}`);
       console.error('Error:', error);

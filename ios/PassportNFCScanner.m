@@ -17,5 +17,14 @@ RCT_EXTERN_METHOD(scan:
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) reject
                   )
+
+RCT_EXTERN_METHOD(verifySod:
+                  (NSString *)sodDataBase64
+                  cscaCertBase64:(NSString *)cscaCertBase64
+                  dataGroupBase64:(NSString *)dataGroupBase64
+                  dataGroupNumber:(nonnull NSNumber *)dataGroupNumber
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject
+                  )
 @end
 

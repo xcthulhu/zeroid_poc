@@ -4,8 +4,14 @@ version = "0.1.0"
 edition = "2021"
 
 [lib]
-crate_type = ["cdylib", "staticlib"]
+crate-type = ["cdylib", "staticlib", "lib"]
 name = "zeroid_rust_passport_utils"
  
 [dependencies]
-uniffi = { version = "0.25.3", features = [ "cli" ] }
+base64 = "0.22.1"
+rasn = "0.22.2"
+rasn-cms = "0.22.2"
+rasn-pkix = "0.22.2"
+ring = "0.17.8"
+thiserror = "2.0.11"
+uniffi = { version = "0.28.3", features = [ "cli" ] }

@@ -1,4 +1,8 @@
-export function getMRZKey(passportNumber: string, dateOfBirth: string, dateOfExpiry: string): string {
+import { NativeModules } from "react-native";
+
+const { PassportNFCScanner } = NativeModules;
+
+function getMRZKeyForBAC(passportNumber: string, dateOfBirth: string, dateOfExpiry: string): string {
     const pad = (value: string, fieldLength: number): string => {
         return (value + '<'.repeat(fieldLength)).substring(0, fieldLength);
     };
@@ -43,4 +47,52 @@ export function getMRZKey(passportNumber: string, dateOfBirth: string, dateOfExp
         const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
         throw new Error(`Failed to generate MRZ key: ${errorMessage}`);
     }
+}
+
+export type PassportScanResult = {
+    COM: string;
+    DG1?: string;
+    DG2?: string;
+    DG3?: string;
+    DG4?: string;
+    DG5?: string;
+    DG6?: string;
+    DG7?: string;
+    DG8?: string;
+    DG9?: string;
+    DG10?: string;
+    DG11?: string;
+    DG12?: string;
+    DG13?: string;
+    DG14?: string;
+    DG15?: string;
+    DG16?: string;
+    SOD?: string;
+    AAChallenge?: string;
+    AASignature?: string;
+};
+
+export type DataGroupName = 'DG1' | 'DG2' | 'DG3' | 'DG4' | 'DG5' | 'DG6' | 'DG7' | 'DG8' | 'DG9' | 'DG10' | 'DG11' | 'DG12' | 'DG13' | 'DG14' | 'DG15' | 'DG16' | 'SOD';
+
+export async function scan(
+    passportNumber: string,
+    dateOfBirth: string,
+    dateOfExpiry: string,
+    dataGroups: DataGroupName[],
+    skipSecureElements: boolean = false,
+    skipCA: boolean = false,
+    skipPACE: boolean = false
+): Promise<PassportScanResult> {
+    const mrzKeyForBAC = getMRZKeyForBAC(passportNumber, dateOfBirth, dateOfExpiry);
+    return await PassportNFCScanner.scan(
+        mrzKeyForBAC,
+        dataGroups,
+        skipSecureElements,
+        skipCA,
+        skipPACE
+    ) as PassportScanResult;
+}
+
+export async function verifySod(sod: string, cert: string, dg: string, dgNumber: number): Promise<any> {
+    return await PassportNFCScanner.verifySod(sod, cert, dg, dgNumber);
 }
