@@ -18,16 +18,6 @@ pub enum VerifySODBytesError {
     PassportVerificationError(#[from] verify::PassportVerificationError),
 }
 
-#[derive(uniffi::Error, thiserror::Error, Debug)]
-pub enum MyError {
-    #[error("Missing input")]
-    MissingInput,
-    #[error("Index out of bounds: {index} >= {size}")]
-    IndexOutOfBounds { index: u32, size: u32 },
-    #[error("Generic error: {message}")]
-    Generic { message: String },
-}
-
 #[uniffi::export]
 fn verify_sod_base64(
     sod_data_base64: String,
@@ -51,9 +41,4 @@ fn verify_sod_base64(
         &data_group_bytes,
         data_group_number,
     )?)
-}
-
-#[uniffi::export]
-fn say_hi() -> String {
-    "Hello from Rust!".to_string()
 }
