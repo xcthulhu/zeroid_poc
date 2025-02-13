@@ -10,7 +10,7 @@ fn main() -> Result<(), Box<dyn StdError>> {
     let sod_path: PathBuf = args[1].clone().into();
     let csca_path: PathBuf = args[2].clone().into();
     let data_group_path: PathBuf = args[3].clone().into();
-    let data_group_number: i32 = args[4].parse().expect("Invalid datagroup number");
+    let data_group_number: i32 = args[4].parse()?;
 
     let sod_data_bytes = std::fs::read(sod_path)?;
     let csca_cert_bytes = std::fs::read(&csca_path)
@@ -23,7 +23,7 @@ fn main() -> Result<(), Box<dyn StdError>> {
         )
     })?;
 
-    zeroid_rust_passport_utils::verify::verify_sod_bytes(
+    zeroid_rust_passport_verifier_core::verify_sod_bytes(
         &sod_data_bytes,
         &csca_cert_bytes,
         &data_group_bytes,

@@ -1,0 +1,7 @@
+[package]
+name = "passport-verifier"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+zeroid_rust_passport_verifier_core = { path = "../passport-verifier-core" }

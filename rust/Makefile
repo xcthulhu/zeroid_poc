@@ -1,5 +1,7 @@
 .PHONY = all all-ios setup-ios
 
+RUST_SOURCES = uniffi-bindings/src/lib.rs passport-verifier-core/src/lib.rs
+
 all:
 	@echo "Please run 'make all-ios' to build for iOS"
 
@@ -8,16 +10,16 @@ all-ios: setup-ios ZeroIDRustPassportUtils.xcframework
 setup-ios:
 	rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios
 
-target/debug/libzeroid_rust_passport_utils.dylib: src/lib.rs src/verify.rs
+target/debug/libzeroid_rust_passport_utils.dylib: $(RUST_SOURCES)
 	cargo build
 
-target/aarch64-apple-ios/release/libzeroid_rust_passport_utils.a: src/lib.rs src/verify.rs
+target/aarch64-apple-ios/release/libzeroid_rust_passport_utils.a: $(RUST_SOURCES)
 	cargo build --release --target aarch64-apple-ios
 
-target/aarch64-apple-ios-sim/release/libzeroid_rust_passport_utils.a: src/lib.rs src/verify.rs
+target/aarch64-apple-ios-sim/release/libzeroid_rust_passport_utils.a: $(RUST_SOURCES)
 	cargo build --release --target aarch64-apple-ios-sim
 
-target/x86_64-apple-ios/release/libzeroid_rust_passport_utils.a: src/lib.rs src/verify.rs
+target/x86_64-apple-ios/release/libzeroid_rust_passport_utils.a: $(RUST_SOURCES)
 	cargo build --release --target x86_64-apple-ios
 
 libzeroid_rust_passport_utils_universal.a: target/aarch64-apple-ios-sim/release/libzeroid_rust_passport_utils.a target/x86_64-apple-ios/release/libzeroid_rust_passport_utils.a

@@ -1,8 +1,6 @@
 use base64::prelude::*;
 use thiserror::Error;
 
-pub mod verify;
-
 uniffi::setup_scaffolding!();
 
 #[derive(Debug, Error, uniffi::Error)]
@@ -15,7 +13,9 @@ pub enum VerifySODBytesError {
     #[error("Failed to decode data group base64: {0}")]
     DataGroupBase64DecodeError(base64::DecodeError),
     #[error(transparent)]
-    PassportVerificationError(#[from] verify::PassportVerificationError),
+    PassportVerificationError(
+        #[from] zeroid_rust_passport_verifier_core::PassportVerificationError,
+    ),
 }
 
 #[uniffi::export]
@@ -35,7 +35,7 @@ fn verify_sod_base64(
         .decode(&data_group_base64)
         .map_err(VerifySODBytesError::DataGroupBase64DecodeError)?;
 
-    Ok(verify::verify_sod_bytes(
+    Ok(zeroid_rust_passport_verifier_core::verify_sod_bytes(
         &sod_data_bytes,
         &csca_cert_bytes,
         &data_group_bytes,
