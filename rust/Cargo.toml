@@ -1,7 +1,7 @@
 [package]
 name = "zeroid_rust_passport_utils"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [lib]
 crate-type = ["cdylib", "staticlib", "lib"]
@@ -11,9 +11,9 @@ name = "zeroid_rust_passport_utils"
 base64 = "0.22.1"
 digest = "0.10.7"
 pkcs8 = "0.10.2"
-rasn = "0.22.2"
-rasn-cms = "0.22.2"
-rasn-pkix = "0.22.2"
+rasn = "0.24.0"
+rasn-cms = "0.24.0"
+rasn-pkix = "0.24.0"
 rsa = "0.9.7"
 sha1 = { version = "0.10.6", features = ["oid"] }
 sha2 = { version = "0.10.8", features = ["oid"] }
